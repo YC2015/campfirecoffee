@@ -57,6 +57,12 @@ for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
   PikePlaceMarket.totalDailyProjectedCups += PikePlaceMarket.projectedCupsPerHr[i];
   PikePlaceMarket.totalDailyProjectedLbs += PikePlaceMarket.projectedLbsPerCustomer[i];
   PikePlaceMarket.totalDailyBeans += PikePlaceMarket.totalBeansPerHr[i];
-
-
 };
+
+//Company Totals
+var companyTotalProjectedCups = PikePlaceMarket.totalDailyProjectedCups;
+companyTotalProjectedCups;
+var companyTotalProjectedLbs = PikePlaceMarket.totalDailyProjectedLbs;
+companyTotalProjectedLbs;
+var companyTotalBeans = PikePlaceMarket.totalDailyBeans;
+companyTotalBeans;
