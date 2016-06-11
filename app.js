@@ -7,6 +7,7 @@ var PikePlaceMarket = {
   RandomNumberofCustomersperHr: [ ],
   ProjectedCupsperHr: [],
   ProjectedLbsperCustomer: [],
+  TotalBeansperHr: [],
 
   randomnumberofcustomers: function(minCustomerperHr, maxCustomerperHr) {
     return Math.floor(Math.random() * (maxCustomerperHr - minCustomerperHr + 1) ) + minCustomerperHr;
@@ -18,6 +19,10 @@ var PikePlaceMarket = {
 
   projectedtogolbssoldperhr: function(customers) {
     return Math.ceil(this.togopoundspercustomer * customers);
+  },
+
+  totalamountofbeansperhr: function(a,b) {
+    return Math.ceil(a + b);
   }
 
 };
@@ -31,20 +36,14 @@ for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
 
   var hourlytogolbs = PikePlaceMarket.projectedtogolbssoldperhr(PikePlaceMarket.RandomNumberofCustomersperHr[i]);
   PikePlaceMarket.ProjectedLbsperCustomer.push(hourlytogolbs);
+
+  var hourlytotalbeans = PikePlaceMarket.totalamountofbeansperhr(PikePlaceMarket.ProjectedCupsperHr[i], PikePlaceMarket.ProjectedLbsperCustomer[i]);
+  PikePlaceMarket.TotalBeansperHr.push(hourlytotalbeans);
 }
 
 
 /*
 
-  projectedcupssoldperhour: function () {
-    cupspercustomer * randomnumberofcustomers;
-  },
-  projectedpoundssoldperhour: function () {
-    togopoundspercustomer * randomnumberofcustomers;
-  },
-  totalamountofbeansperhour: function () {
-    projectedpoundssoldperhour + projectedcupssoldperhour;
-  },
   totalamountofbeansperday:
   // totalamountofbeansperhour * #of hours
   // total amount at this location
