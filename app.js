@@ -8,6 +8,9 @@ var PikePlaceMarket = {
   ProjectedCupsperHr: [],
   ProjectedLbsperCustomer: [],
   TotalBeansperHr: [],
+  totalDailyProjectedCups: 0,
+  totalDailyProjectedLbs:0,
+  totalDailyBeans:0,
 
   randomnumberofcustomers: function(minCustomerperHr, maxCustomerperHr) {
     return Math.floor(Math.random() * (maxCustomerperHr - minCustomerperHr + 1) ) + minCustomerperHr;
@@ -28,6 +31,8 @@ var PikePlaceMarket = {
 };
 
 for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
+
+  //Hourly Totals
   var hourlycustomer = PikePlaceMarket.randomnumberofcustomers(PikePlaceMarket.minCustomerperHr, PikePlaceMarket.maxCustomerperHr);
   PikePlaceMarket.RandomNumberofCustomersperHr.push(hourlycustomer);
 
@@ -39,8 +44,16 @@ for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
 
   var hourlytotalbeans = PikePlaceMarket.totalamountofbeansperhr(PikePlaceMarket.ProjectedCupsperHr[i], PikePlaceMarket.ProjectedLbsperCustomer[i]);
   PikePlaceMarket.TotalBeansperHr.push(hourlytotalbeans);
-}
 
+//Daily Totals
+  PikePlaceMarket.totalDailyProjectedCups += PikePlaceMarket.ProjectedCupsperHr[i];
+  PikePlaceMarket.totalDailyProjectedLbs += PikePlaceMarket.ProjectedLbsperCustomer[i];
+  PikePlaceMarket.totalDailyBeans += PikePlaceMarket.TotalBeansperHr[i];
+
+};
+
+
+//return PikePlaceMarket.TotalDailyProjectedCupsperHr;
 
 /*
 
