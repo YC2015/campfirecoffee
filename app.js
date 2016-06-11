@@ -1,31 +1,36 @@
 var PikePlaceMarket = {
   hrs : 13,
-  minCustomerperHr : 14,
-  maxCustomerperHr : 35,
-  cupspercustomer : 1.2,
-  togopoundspercustomer : 0.34,
-  RandomNumberofCustomersperHr: [ ],
-  ProjectedCupsperHr: [],
-  ProjectedLbsperCustomer: [],
-  TotalBeansperHr: [],
+  minCustomerPerHr : 14,
+  maxCustomerPerHr : 35,
+  cupsPerCustomer : 1.2,
+  toGoPoundsPerCustomer : 0.34,
+  randomNumberOfCustomersPerHr: [ ],
+  projectedCupsPerHr: [],
+  projectedLbsPerCustomer: [],
+  totalBeansPerHr: [],
+  employeesPerHr: [],
   totalDailyProjectedCups: 0,
   totalDailyProjectedLbs:0,
   totalDailyBeans:0,
 
-  randomnumberofcustomers: function(minCustomerperHr, maxCustomerperHr) {
-    return Math.floor(Math.random() * (maxCustomerperHr - minCustomerperHr + 1) ) + minCustomerperHr;
+  randomNumberOfCustomers: function(minCustomerPerHr, maxCustomerPerHr) {
+    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
   },
 
-  projectedcupssoldperhr: function(customers) {
-    return Math.ceil(this.cupspercustomer * customers);
+  projectedCupsSoldPerHr: function(customers) {
+    return Math.ceil(this.cupsPerCustomer * customers);
   },
 
-  projectedtogolbssoldperhr: function(customers) {
-    return Math.ceil(this.togopoundspercustomer * customers);
+  projectedToGoLbsSoldPerHr: function(customers) {
+    return Math.ceil(this.toGoPoundsPerCustomer * customers);
   },
 
-  totalamountofbeansperhr: function(a,b) {
-    return Math.ceil(a + b);
+  totalAmountOfBeansPerHr: function(a,b) {
+    return Math.ceil((a / 16) + b);
+  },
+
+  numberOfEmployees: function(c){
+    return Math.ceil((c * 2) / 60 );
   }
 
 };
@@ -33,36 +38,25 @@ var PikePlaceMarket = {
 for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
 
   //Hourly Totals
-  var hourlycustomer = PikePlaceMarket.randomnumberofcustomers(PikePlaceMarket.minCustomerperHr, PikePlaceMarket.maxCustomerperHr);
-  PikePlaceMarket.RandomNumberofCustomersperHr.push(hourlycustomer);
+  var hourlyCustomer = PikePlaceMarket.randomNumberOfCustomers(PikePlaceMarket.minCustomerPerHr, PikePlaceMarket.maxCustomerPerHr);
+  PikePlaceMarket.randomNumberOfCustomersPerHr.push(hourlyCustomer);
 
-  var hourlycups = PikePlaceMarket.projectedcupssoldperhr(PikePlaceMarket.RandomNumberofCustomersperHr[i]);
-  PikePlaceMarket.ProjectedCupsperHr.push(hourlycups);
+  var hourlyCups = PikePlaceMarket.projectedCupsSoldPerHr(PikePlaceMarket.randomNumberOfCustomersPerHr[i]);
+  PikePlaceMarket.projectedCupsPerHr.push(hourlyCups);
 
-  var hourlytogolbs = PikePlaceMarket.projectedtogolbssoldperhr(PikePlaceMarket.RandomNumberofCustomersperHr[i]);
-  PikePlaceMarket.ProjectedLbsperCustomer.push(hourlytogolbs);
+  var hourlyToGoLbs = PikePlaceMarket.projectedToGoLbsSoldPerHr(PikePlaceMarket.randomNumberOfCustomersPerHr[i]);
+  PikePlaceMarket.projectedLbsPerCustomer.push(hourlyToGoLbs);
 
-  var hourlytotalbeans = PikePlaceMarket.totalamountofbeansperhr(PikePlaceMarket.ProjectedCupsperHr[i], PikePlaceMarket.ProjectedLbsperCustomer[i]);
-  PikePlaceMarket.TotalBeansperHr.push(hourlytotalbeans);
+  var hourlyTotalBeans = PikePlaceMarket.totalAmountOfBeansPerHr(PikePlaceMarket.projectedCupsPerHr[i], PikePlaceMarket.projectedLbsPerCustomer[i]);
+  PikePlaceMarket.totalBeansPerHr.push(hourlyTotalBeans);
 
-//Daily Totals
-  PikePlaceMarket.totalDailyProjectedCups += PikePlaceMarket.ProjectedCupsperHr[i];
-  PikePlaceMarket.totalDailyProjectedLbs += PikePlaceMarket.ProjectedLbsperCustomer[i];
-  PikePlaceMarket.totalDailyBeans += PikePlaceMarket.TotalBeansperHr[i];
+  var hourlyEmployees = PikePlaceMarket.numberOfEmployees(PikePlaceMarket.randomNumberOfCustomersPerHr[i]);
+  PikePlaceMarket.employeesPerHr.push(hourlyEmployees);
+
+  //Daily Totals
+  PikePlaceMarket.totalDailyProjectedCups += PikePlaceMarket.projectedCupsPerHr[i];
+  PikePlaceMarket.totalDailyProjectedLbs += PikePlaceMarket.projectedLbsPerCustomer[i];
+  PikePlaceMarket.totalDailyBeans += PikePlaceMarket.totalBeansPerHr[i];
+
 
 };
-
-
-//return PikePlaceMarket.TotalDailyProjectedCupsperHr;
-
-/*
-
-  totalamountofbeansperday:
-  // totalamountofbeansperhour * #of hours
-  // total amount at this location
-  numberofemployees: function() {
-  // calculation, include method for rounding
-  }
-};
-
-// method to calculate total storewide totals from all locations*/
