@@ -1,11 +1,12 @@
 var PikePlaceMarket = {
-  hrs : 15,
+  hrs : 13,
   minCustomerperHr : 14,
   maxCustomerperHr : 35,
   cupspercustomer : 1.2,
   togopoundspercustomer : 0.34,
   RandomNumberofCustomersperHr: [ ],
   ProjectedCupsperHr: [],
+  ProjectedLbsperCustomer: [],
 
   randomnumberofcustomers: function(minCustomerperHr, maxCustomerperHr) {
     return Math.floor(Math.random() * (maxCustomerperHr - minCustomerperHr + 1) ) + minCustomerperHr;
@@ -13,8 +14,11 @@ var PikePlaceMarket = {
 
   projectedcupssoldperhr: function(customers) {
     return Math.ceil(this.cupspercustomer * customers);
-  }
+  },
 
+  projectedtogolbssoldperhr: function(customers) {
+    return Math.ceil(this.togopoundspercustomer * customers);
+  }
 
 };
 
@@ -24,6 +28,9 @@ for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
 
   var hourlycups = PikePlaceMarket.projectedcupssoldperhr(PikePlaceMarket.RandomNumberofCustomersperHr[i]);
   PikePlaceMarket.ProjectedCupsperHr.push(hourlycups);
+
+  var hourlytogolbs = PikePlaceMarket.projectedtogolbssoldperhr(PikePlaceMarket.RandomNumberofCustomersperHr[i]);
+  PikePlaceMarket.ProjectedLbsperCustomer.push(hourlytogolbs);
 }
 
 
