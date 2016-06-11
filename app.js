@@ -1,16 +1,23 @@
+var PikePlaceMarket = {
+  hrs : 15,
+  minCustomerperHr : 14,
+  maxCustomerperHr : 35,
+  cupspercustomer : 1.2,
+  togopoundspercustomer : 0.34,
+  RandomNumberofCustomersperHr: [ ],
 
-// object model for all store locations
-var storeLocation = {
+  randomnumberofcustomers: function(minCustomerperHr, maxCustomerperHr) {
+    return Math.floor(Math.random() * (maxCustomerperHr - minCustomerperHr + 1) ) + minCustomerperHr;
+  }
+
 };
 
-//started working through a specific locaton so I could focus on numbers more easily
-//calculations based on per hour (not sure how to incorporate hours just yet)
-//have to incorporate 16 cups = 1lbs of coffee
-var PikePlaceMarket = {
-  minCustomerperHr: 14,
-  maxCustomerperHr: 35,
-  cupspercustomer: 1.2,
-  togopoundspercustomer: 0.34,
+for ( var i = 1; i < PikePlaceMarket.hrs; i++) {
+  var hourlycustomer = PikePlaceMarket.randomnumberofcustomers(PikePlaceMarket.minCustomerperHr, PikePlaceMarket.maxCustomerperHr);
+  PikePlaceMarket.RandomNumberofCustomersperHr.push(hourlycustomer);
+}
+
+/*
   randomnumberofcustomers: function (minCustomerperHr, maxCustomerperHr){
     return Math.floor( Math.random() * ( maxCustomerperHr - minCustomerperHr + 1)) + minCustomerperHr;
   },
@@ -31,6 +38,4 @@ var PikePlaceMarket = {
   }
 };
 
-//Need to figure out how to create my array for the data page
-
-// method to calculate total storewide totals from all locations
+// method to calculate total storewide totals from all locations*/
