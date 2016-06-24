@@ -1,52 +1,60 @@
-function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer) {
+var time = ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'];
 
+
+function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer, toGoPoundsPerCustomer) {
 //properties
-  StoreLocation.name = '';
-  StoreLocation.hrs = 13;
-  StoreLocation.time = ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'];
-  StoreLocation.minCustomerPerHr = 0;
-  StoreLocation.maxCustomerPerHr = 0;
-  StoreLocation.cupsPerCustomer = 0;
-  StoreLocation.toGoPoundsPerCustomer = 0;
-  StoreLocation.randomNumberOfCustomersPerHr = [];
-  StoreLocation.sumOfRandomNumbersOfCustomersPerHr = 0;
-  StoreLocation.projectedCupsPerHr = [];
-  StoreLocation.projectedCupsPerHrInLbs = [];
-  StoreLocation.projectedLbsPerCustomer = [];
-  StoreLocation.totalBeansPerHr = [];
-  StoreLocation.employeesPerHr = [];
-  storeLocation.totalDailyProjectedCups = 0;
-  StoreLocation.totalDailyProjectedLbs = 0;
-  StoreLocation.totalDailyBeans = 0;
-
+  this.name = name;
+  this.minCustomerPerHr = minCustomerPerHr;
+  this.maxCustomerPerHr = maxCustomerPerHr;
+  this.cupsPerCustomer = cupsPerCustomer;
+  this.toGoPoundsPerCustomer = toGoPoundsPerCustomer;
+  this.randomNumberOfCustomersPerHr = [];
+  this.sumOfRandomNumbersOfCustomersPerHr = 0;
+  this.projectedCupsPerHr = [];
+  this.projectedCupsPerHrInLbs = [];
+  this.projectedLbsPerCustomer = [];
+  this.totalBeansPerHr = [];
+  this.employeesPerHr = [];
+  this.totalDailyProjectedCups = 0;
+  this.totalDailyProjectedLbs = 0;
+  this.totalDailyBeans = 0;
+};
 //methods
-  StoreLocation.randomNumberOfCustomers = function(minCustomerPerHr, maxCustomerPerHr) {
-    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
+  StoreLocation.prototype.randomNumberOfCustomers = function(minCustomerPerHr, maxCustomerPerHr) {
+    for ( var i = 0; i < time.length; i++){
+      var hourlyCustomer = Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
+      this.randomNumberOfCustomersPerHr.push(hourlyCustomer);
+    }
   };
 
-  StoreLocation.projectedCupsSoldPerHr = function(customers) {
+  StoreLocation.prototype.projectedCupsSoldPerHr = function(customers) {
     return Math.ceil(this.cupsPerCustomer * customers);
   };
 
-  StoreLocation.projectedCupsSoldPerHrInLbs = function(z) {
+  StoreLocation.prototype.projectedCupsSoldPerHrInLbs = function(z) {
     return Math.ceil(z / 16);
   };
 
-  StoreLocation.projectedToGoLbsSoldPerHr = function(customers) {
+  StoreLocation.prototype.projectedToGoLbsSoldPerHr = function(customers) {
     return Math.ceil(this.toGoPoundsPerCustomer * customers);
   };
 
-  StoreLocation.totalAmountOfBeansPerHr = function(a,b) {
+  StoreLocation.prototype.totalAmountOfBeansPerHr = function(a,b) {
     return Math.ceil((a / 16) + b);
   };
 
-  StoreLocation.numberOfEmployees = function(c){
+  StoreLocation.prototype.numberOfEmployees = function(c){
     return Math.ceil((c * 2) / 60 );
   };
-}
 
-var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2);
-pikePlaceMarket();
+StoreLocation.prototype.allmethods = function() {
+
+};
+
+
+
+var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2, 0.34);
+pikePlaceMarket.randomNumberOfCustomers(pikePlaceMarket.minCustomerPerHr, pikePlaceMarket.maxCustomerPerHr);
 
 /*var PikePlaceMarket = {
   name: 'Pike Place Market',
@@ -93,7 +101,7 @@ pikePlaceMarket();
 
 };
 
-for ( var i = 0; i < PikePlaceMarket.hrs; i++) {
+for ( var i = 0; i < time.length; i++) {
 
   //Hourly Totals
   var hourlyCustomer = PikePlaceMarket.randomNumberOfCustomers(PikePlaceMarket.minCustomerPerHr, PikePlaceMarket.maxCustomerPerHr);
