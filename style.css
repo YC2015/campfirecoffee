@@ -45,5 +45,26 @@ h2 {
   margin-right: 20px;
 }
 
+#storesection1 {
+  display: block;
+}
+
+
 #locationandhours {
+  margin: 5px;
+  background-color: #C1CDCD;
+  border-radius: 5px;
+  text-align: center;
+  padding-bottom: 15px
+}
+
+
+.hours {
+  text-align: center;
+  font-family: serif;
+  font-size: 20px;
+}
+
+.pics {
+  padding-top: 15px;
 }
