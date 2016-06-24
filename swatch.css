@@ -88,13 +88,17 @@ hr {
 }
 
 #a {
-  background-color: #AA7939
+  background-color: #AA7939;
 }
 
 #b {
-  background-color: #C1CDCD
+  background-color: #C1CDCD;
 }
 
 #c {
-  background-color: #D4A76A
+  background-color: #D4A76A;
+}
+
+#d {
+  background: #2C1C0E;
 }

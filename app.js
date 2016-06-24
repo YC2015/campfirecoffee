@@ -12,49 +12,78 @@ function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustome
   this.sumOfRandomNumbersOfCustomersPerHr = 0;
   this.projectedCupsPerHr = [];
   this.projectedCupsPerHrInLbs = [];
-  this.projectedLbsPerCustomer = [];
+  this.projectedToGoLbsPerHr = [];
   this.totalBeansPerHr = [];
   this.employeesPerHr = [];
   this.totalDailyProjectedCups = 0;
   this.totalDailyProjectedLbs = 0;
   this.totalDailyBeans = 0;
 };
+
 //methods
-  StoreLocation.prototype.randomNumberOfCustomers = function(minCustomerPerHr, maxCustomerPerHr) {
-    for ( var i = 0; i < time.length; i++){
-      var hourlyCustomer = Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
-      this.randomNumberOfCustomersPerHr.push(hourlyCustomer);
-    }
-  };
+StoreLocation.prototype.randomNumberOfCustomers = function(min, max) {
+  for ( var i = 0; i < time.length; i++){
+    var hourlyCustomer = Math.floor(Math.random() * (max - min + 1) ) + min;
+    this.randomNumberOfCustomersPerHr.push(hourlyCustomer);
+  }
+};
 
-  StoreLocation.prototype.projectedCupsSoldPerHr = function(customers) {
-    return Math.ceil(this.cupsPerCustomer * customers);
-  };
+StoreLocation.prototype.projectedCupsSoldPerHr = function(customer) {
+  for ( var i = 0; i < time.length; i++){
+    var hourlyCups = Math.ceil(this.cupsPerCustomer * customer[i]);
+    this.projectedCupsPerHr.push(hourlyCups);
+  }
+};
 
-  StoreLocation.prototype.projectedCupsSoldPerHrInLbs = function(z) {
-    return Math.ceil(z / 16);
-  };
+StoreLocation.prototype.projectedCupsSoldPerHrInLbs = function(z) {
+  for (var i = 0; i < time.length; i++){
+    var hourlyCupsLbs = Math.ceil(z[i] / 16);
+    this.projectedCupsPerHrInLbs.push(hourlyCupsLbs);
+  }
+};
 
-  StoreLocation.prototype.projectedToGoLbsSoldPerHr = function(customers) {
-    return Math.ceil(this.toGoPoundsPerCustomer * customers);
-  };
+StoreLocation.prototype.projectedToGoLbsSoldPerHr = function(customers) {
+  for (var i = 0; i < time.length; i++){
+    var hourlyToGoLbs = Math.ceil(this.toGoPoundsPerCustomer * customers[i]);
+    this.projectedToGoLbsPerHr.push(hourlyToGoLbs);
+  }
+};
 
-  StoreLocation.prototype.totalAmountOfBeansPerHr = function(a,b) {
-    return Math.ceil((a / 16) + b);
-  };
+StoreLocation.prototype.totalAmountOfBeansPerHr = function(a,b) {
+  for (var i = 0; i < time.length; i++){
+    var hourlyTotalBeans = Math.ceil((a[i] / 16) + b[i]);
+    this.totalBeansPerHr.push(hourlyTotalBeans);
+  }
+};
 
-  StoreLocation.prototype.numberOfEmployees = function(c){
-    return Math.ceil((c * 2) / 60 );
-  };
+StoreLocation.prototype.numberOfEmployees = function(c){
+  for (var i = 0; i < time.length; i++){
+    var hourlyEmployees = Math.ceil((c[i] * 2) / 60 );
+    this.employeesPerHr.push(hourlyEmployees);
+  }
+};
+
+StoreLocation.prototype.totalDailyProjectedCups = function(cups){
+  for (var i = 0; i < time.length; i++){
+    var companyTotalProjectedCups = this.totalDailyProjectedCups += cups[i];
+    companyTotalProjectedCups;
+    return this.companyTotalProjectedCups;
+  }
+};
 
 StoreLocation.prototype.allmethods = function() {
 
 };
 
 
-
 var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2, 0.34);
 pikePlaceMarket.randomNumberOfCustomers(pikePlaceMarket.minCustomerPerHr, pikePlaceMarket.maxCustomerPerHr);
+pikePlaceMarket.projectedCupsSoldPerHr(pikePlaceMarket.randomNumberOfCustomersPerHr);
+pikePlaceMarket.projectedCupsSoldPerHrInLbs(pikePlaceMarket.projectedCupsPerHr);
+pikePlaceMarket.projectedToGoLbsSoldPerHr(pikePlaceMarket.randomNumberOfCustomersPerHr);
+pikePlaceMarket.totalAmountOfBeansPerHr(pikePlaceMarket.projectedCupsPerHr, pikePlaceMarket.projectedToGoLbsPerHr);
+pikePlaceMarket.numberOfEmployees(pikePlaceMarket.randomNumberOfCustomersPerHr);
+pikePlaceMarket.totalDailyProjectedCups(pikePlaceMarket.projectedCupsPerHr);
 
 /*var PikePlaceMarket = {
   name: 'Pike Place Market',
