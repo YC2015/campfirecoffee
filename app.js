@@ -1,4 +1,54 @@
-var PikePlaceMarket = {
+function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer) {
+
+//properties
+  StoreLocation.name = '';
+  StoreLocation.hrs = 13;
+  StoreLocation.time = ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'];
+  StoreLocation.minCustomerPerHr = 0;
+  StoreLocation.maxCustomerPerHr = 0;
+  StoreLocation.cupsPerCustomer = 0;
+  StoreLocation.toGoPoundsPerCustomer = 0;
+  StoreLocation.randomNumberOfCustomersPerHr = [];
+  StoreLocation.sumOfRandomNumbersOfCustomersPerHr = 0;
+  StoreLocation.projectedCupsPerHr = [];
+  StoreLocation.projectedCupsPerHrInLbs = [];
+  StoreLocation.projectedLbsPerCustomer = [];
+  StoreLocation.totalBeansPerHr = [];
+  StoreLocation.employeesPerHr = [];
+  storeLocation.totalDailyProjectedCups = 0;
+  StoreLocation.totalDailyProjectedLbs = 0;
+  StoreLocation.totalDailyBeans = 0;
+
+//methods
+  StoreLocation.randomNumberOfCustomers = function(minCustomerPerHr, maxCustomerPerHr) {
+    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
+  };
+
+  StoreLocation.projectedCupsSoldPerHr = function(customers) {
+    return Math.ceil(this.cupsPerCustomer * customers);
+  };
+
+  StoreLocation.projectedCupsSoldPerHrInLbs = function(z) {
+    return Math.ceil(z / 16);
+  };
+
+  StoreLocation.projectedToGoLbsSoldPerHr = function(customers) {
+    return Math.ceil(this.toGoPoundsPerCustomer * customers);
+  };
+
+  StoreLocation.totalAmountOfBeansPerHr = function(a,b) {
+    return Math.ceil((a / 16) + b);
+  };
+
+  StoreLocation.numberOfEmployees = function(c){
+    return Math.ceil((c * 2) / 60 );
+  };
+}
+
+var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2);
+pikePlaceMarket();
+
+/*var PikePlaceMarket = {
   name: 'Pike Place Market',
   hrs : 13,
   time: ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'],
@@ -570,4 +620,4 @@ var SeaTacmorebulletstotalpounds = document.createElement ('li');
 SeaTacmorebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + SeaTac.name + ': ' + SeaTac.totalDailyBeans;
 SeaTacList.appendChild(SeaTacmorebulletstotalpounds);
 
-SeaTacx.appendChild(SeaTacList);
+SeaTacx.appendChild(SeaTacList);*/
