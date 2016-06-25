@@ -1,8 +1,9 @@
 var time = ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'];
 
+//Constructor
 
 function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer, toGoPoundsPerCustomer) {
-//properties
+//Properties
   this.name = name;
   this.minCustomerPerHr = minCustomerPerHr;
   this.maxCustomerPerHr = maxCustomerPerHr;
@@ -15,12 +16,13 @@ function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustome
   this.projectedToGoLbsPerHr = [];
   this.totalBeansPerHr = [];
   this.employeesPerHr = [];
+  this.totalDailyEmployees = 0;
   this.totalDailyProjectedCups = 0;
   this.totalDailyProjectedLbs = 0;
   this.totalDailyBeans = 0;
 };
 
-//methods
+//Methods
 StoreLocation.prototype.randomNumberOfCustomers = function(min, max) {
   for ( var i = 0; i < time.length; i++){
     var hourlyCustomer = Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -87,6 +89,12 @@ StoreLocation.prototype.dailyCustomers = function(customers){
   }
 };
 
+StoreLocation.prototype.dailyemployees = function (employees) {
+  for (var i = 0; i < time.length; i++){
+    this.totalDailyEmployees += employees[i];
+  }
+};
+
 
 StoreLocation.prototype.allmethods = function() {
   this.randomNumberOfCustomers(this.minCustomerPerHr, this.maxCustomerPerHr);
@@ -99,8 +107,10 @@ StoreLocation.prototype.allmethods = function() {
   this.dailyProjectedLbs(this.projectedToGoLbsPerHr);
   this.dailyTotalLbs(this.totalBeansPerHr);
   this.dailyCustomers(this.randomNumberOfCustomersPerHr);
+  this.dailyemployees(this.employeesPerHr);
 };
 
+//Creating my store location objects
 
 var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2, 0.34);
 pikePlaceMarket.allmethods();
@@ -117,19 +127,17 @@ southLakeUnion.allmethods();
 var seaTacAirport = new StoreLocation ('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 seaTacAirport.allmethods();
 
-
-
-
-
+// Creating Table Beans Needed By Location Each Day
 
 
 var table = document.getElementById('beanstable');
+var total = 'Daily Location Total';
 
 function makeheadertime(timearray) {
   var tableheader1 = document.createElement('th');
   table.appendChild(tableheader1);
   var tableheader2 = document.createElement('th');
-  tableheader2.textContent = 'Daily Location Total';
+  tableheader2.textContent = total;
   table.appendChild(tableheader2);
 
   for ( var h = 0; h < time.length; h++) {
@@ -141,503 +149,61 @@ function makeheadertime(timearray) {
 
 makeheadertime(time);
 
-function makeRow(obj) {
+function makeRowBeans(obj) {
   var row = document.createElement('tr');
+
   var cell1 = document.createElement('td');
   cell1.textContent = obj.name;
   row.appendChild(cell1);
 
+  var cell2 = document.createElement('td');
+  cell2.textContent = obj.totalDailyBeans;
+  row.appendChild(cell2);
+
+
   for ( var h = 0; h < time.length; h++) {
-    var cell2 = document.createElement('td');
-    cell2.textContent = obj.totalBeansPerHr[h];
-    row.appendChild(cell2);
+    var cell3 = document.createElement('td');
+    cell3.textContent = obj.totalBeansPerHr[h];
+    row.appendChild(cell3);
   }
   table.appendChild(row);
 }
 
-makeRow(pikePlaceMarket);
+makeRowBeans(pikePlaceMarket);
+makeRowBeans(capitolHill);
+makeRowBeans(seattlePublicLibrary);
+makeRowBeans(southLakeUnion);
+makeRowBeans(seaTacAirport);
 
-/*for ( var h = 0; h < PikePlaceMarket.hrs; h++) {
-  var bullets = document.createElement ('li');
-  bullets.textContent = PikePlaceMarket.time[h] + ': ' + PikePlaceMarket.totalBeansPerHr[h] + ' lbs ' + '[' + PikePlaceMarket.randomNumberOfCustomersPerHr[h] + ' customers, ' + PikePlaceMarket.projectedCupsPerHr[h] + ' (' + PikePlaceMarket.projectedCupsPerHrInLbs[h] + ' lbs) ' + PikePlaceMarket.totalBeansPerHr[h] + ' lbs to-go]';
-  list.appendChild(bullets);
-}
+//Creating Baristas Needed By Location
 
-var morebullets = document.createElement ('li');
-morebullets.textContent = 'Total customers at ' + PikePlaceMarket.name + ': ' + PikePlaceMarket.sumOfRandomNumbersOfCustomersPerHr;
-list.appendChild(morebullets);
+var table = document.getElementById ('baristatable');
+var total = 'Total';
+makeheadertime(time);
 
-var morebulletscups = document.createElement ('li');
-morebulletscups.textContent = 'Total cups sold at ' + PikePlaceMarket.name + ': ' + PikePlaceMarket.totalDailyProjectedCups;
-list.appendChild(morebulletscups);
 
-var morebulletstogo = document.createElement ('li');
-morebulletstogo.textContent = 'Total to-go pounds sold at ' + PikePlaceMarket.name + ': ' + PikePlaceMarket.totalDailyProjectedLbs;
-list.appendChild(morebulletstogo);
+function makeRowBaristas(obj) {
+  var row = document.createElement('tr');
 
-var morebulletstotalpounds = document.createElement ('li');
-morebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + PikePlaceMarket.name + ': ' + PikePlaceMarket.totalDailyBeans;
-list.appendChild(morebulletstotalpounds);
+  var cell1 = document.createElement('td');
+  cell1.textContent = obj.name;
+  row.appendChild(cell1);
 
-x.appendChild(list);
+  var cell2 = document.createElement('td');
+  cell2.textContent = obj.totalDailyEmployees;
+  row.appendChild(cell2);
 
-//Capitol Hill
 
-var capitolHill = {
-  name: 'Capitol Hill',
-  hrs : 13,
-  time: ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'],
-  minCustomerPerHr : 12,
-  maxCustomerPerHr : 28,
-  cupsPerCustomer : 3.2,
-  toGoPoundsPerCustomer : 0.03,
-  randomNumberOfCustomersPerHr: [],
-  sumOfRandomNumbersOfCustomersPerHr:0,
-  projectedCupsPerHr: [],
-  projectedCupsPerHrInLbs: [],
-  projectedLbsPerCustomer: [],
-  totalBeansPerHr: [],
-  employeesPerHr: [],
-  totalDailyProjectedCups: 0,
-  totalDailyProjectedLbs:0,
-  totalDailyBeans:0,
-
-  randomNumberOfCustomers: function(minCustomerPerHr, maxCustomerPerHr) {
-    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
-  },
-
-  projectedCupsSoldPerHr: function(customers) {
-    return Math.ceil(this.cupsPerCustomer * customers);
-  },
-
-  projectedCupsSoldPerHrInLbs: function(z) {
-    return Math.ceil(z / 16);
-  },
-
-  projectedToGoLbsSoldPerHr: function(customers) {
-    return Math.ceil(this.toGoPoundsPerCustomer * customers);
-  },
-
-  totalAmountOfBeansPerHr: function(a,b) {
-    return Math.ceil((a / 16) + b);
-  },
-
-  numberOfEmployees: function(c){
-    return Math.ceil((c * 2) / 60 );
+  for ( var h = 0; h < time.length; h++) {
+    var cell3 = document.createElement('td');
+    cell3.textContent = obj.employeesPerHr[h];
+    row.appendChild(cell3);
   }
-
-};
-
-for ( var j = 0; j < capitolHill.hrs; j++) {
-
-  //Hourly Totals
-  var capitolHillhourlyCustomer = capitolHill.randomNumberOfCustomers(capitolHill.minCustomerPerHr, capitolHill.maxCustomerPerHr);
-  capitolHill.randomNumberOfCustomersPerHr.push(capitolHillhourlyCustomer);
-
-  var captiolHillhourlyCups = capitolHill.projectedCupsSoldPerHr(capitolHill.randomNumberOfCustomersPerHr[j]);
-  capitolHill.projectedCupsPerHr.push(captiolHillhourlyCups);
-
-  var capitolHillhourlyCupsLbs = capitolHill.projectedCupsSoldPerHrInLbs(capitolHill.randomNumberOfCustomersPerHr[j]);
-  capitolHill.projectedCupsPerHrInLbs.push(capitolHillhourlyCupsLbs);
-
-  var capitolHillhourlyToGoLbs = capitolHill.projectedToGoLbsSoldPerHr(capitolHill.randomNumberOfCustomersPerHr[j]);
-  capitolHill.projectedLbsPerCustomer.push(capitolHillhourlyToGoLbs);
-
-  var capitolHillhourlyTotalBeans = capitolHill.totalAmountOfBeansPerHr(capitolHill.projectedCupsPerHr[j], capitolHill.projectedLbsPerCustomer[j]);
-  capitolHill.totalBeansPerHr.push(capitolHillhourlyTotalBeans);
-
-  var capitolHillhourlyEmployees = capitolHill.numberOfEmployees(capitolHill.randomNumberOfCustomersPerHr[j]);
-  capitolHill.employeesPerHr.push(capitolHillhourlyEmployees);
-
-  //Daily Totals
-  capitolHill.totalDailyProjectedCups += capitolHill.projectedCupsPerHr[j];
-  capitolHill.totalDailyProjectedLbs += capitolHill.projectedLbsPerCustomer[j];
-  capitolHill.totalDailyBeans += capitolHill.totalBeansPerHr[j];
-
-  capitolHill.sumOfRandomNumbersOfCustomersPerHr += capitolHill.randomNumberOfCustomersPerHr[j];
-};
-
-//Company Totals
-var capitolHillcompanyTotalProjectedCups = capitolHill.totalDailyProjectedCups;
-capitolHillcompanyTotalProjectedCups;
-var capitolHillcompanyTotalProjectedLbs = capitolHill.totalDailyProjectedLbs;
-capitolHillcompanyTotalProjectedLbs;
-var capitolHillcompanyTotalBeans = capitolHill.totalDailyBeans;
-capitolHillcompanyTotalBeans;
-
-//Adding to Data.html
-var capitolHillx = document.getElementById('storelocation');
-var capitolHillChild = document.createElement('p');
-capitolHillChild.textContent = capitolHill.name;
-var capitolHillList = document.createElement ('ul');
-capitolHillx.appendChild(capitolHillChild);
-
-for ( var w = 0; w < capitolHill.hrs; w++) {
-  var capitolHillBullets = document.createElement ('li');
-  capitolHillBullets.textContent = capitolHill.time[w] + ': ' + capitolHill.totalBeansPerHr[w] + ' lbs ' + '[' + capitolHill.randomNumberOfCustomersPerHr[w] + ' customers, ' + capitolHill.projectedCupsPerHr[w] + ' (' + capitolHill.projectedCupsPerHrInLbs[w] + ' lbs) ' + capitolHill.totalBeansPerHr[w] + ' lbs to-go]';
-  capitolHillList.appendChild(capitolHillBullets);
+  table.appendChild(row);
 }
 
-var capitolHillmorebullets = document.createElement ('li');
-capitolHillmorebullets.textContent = 'Total customers at ' + capitolHill.name + ': ' + capitolHill.sumOfRandomNumbersOfCustomersPerHr;
-capitolHillList.appendChild(capitolHillmorebullets);
-
-var capitolHillmorebulletscups = document.createElement ('li');
-capitolHillmorebulletscups.textContent = 'Total cups sold at ' + capitolHill.name + ': ' + capitolHill.totalDailyProjectedCups;
-capitolHillList.appendChild(capitolHillmorebulletscups);
-
-var capitolHillmorebulletstogo = document.createElement ('li');
-capitolHillmorebulletstogo.textContent = 'Total to-go pounds sold at ' + capitolHill.name + ': ' + capitolHill.totalDailyProjectedLbs;
-capitolHillList.appendChild(capitolHillmorebulletstogo);
-
-var capitolHillmorebulletstotalpounds = document.createElement ('li');
-capitolHillmorebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + capitolHill.name + ': ' + capitolHill.totalDailyBeans;
-capitolHillList.appendChild(capitolHillmorebulletstotalpounds);
-
-capitolHillx.appendChild(capitolHillList);
-
-// Seattle Public Library
-
-var SPL = {
-  name: 'Seattle Public Library',
-  hrs : 13,
-  time: ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'],
-  minCustomerPerHr : 9,
-  maxCustomerPerHr : 45,
-  cupsPerCustomer : 2.6,
-  toGoPoundsPerCustomer : 0.02,
-  randomNumberOfCustomersPerHr: [],
-  sumOfRandomNumbersOfCustomersPerHr:0,
-  projectedCupsPerHr: [],
-  projectedCupsPerHrInLbs: [],
-  projectedLbsPerCustomer: [],
-  totalBeansPerHr: [],
-  employeesPerHr: [],
-  totalDailyProjectedCups: 0,
-  totalDailyProjectedLbs:0,
-  totalDailyBeans:0,
-
-  randomNumberOfCustomers: function(minCustomerPerHr, maxCustomerPerHr) {
-    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
-  },
-
-  projectedCupsSoldPerHr: function(customers) {
-    return Math.ceil(this.cupsPerCustomer * customers);
-  },
-
-  projectedCupsSoldPerHrInLbs: function(z) {
-    return Math.ceil(z / 16);
-  },
-
-  projectedToGoLbsSoldPerHr: function(customers) {
-    return Math.ceil(this.toGoPoundsPerCustomer * customers);
-  },
-
-  totalAmountOfBeansPerHr: function(a,b) {
-    return Math.ceil((a / 16) + b);
-  },
-
-  numberOfEmployees: function(c){
-    return Math.ceil((c * 2) / 60 );
-  }
-
-};
-
-for ( var c = 0; c < SPL.hrs; c++) {
-
-  //Hourly Totals
-  var SPLhourlyCustomer = SPL.randomNumberOfCustomers(SPL.minCustomerPerHr, SPL.maxCustomerPerHr);
-  SPL.randomNumberOfCustomersPerHr.push(SPLhourlyCustomer);
-
-  var SPLhourlyCups = SPL.projectedCupsSoldPerHr(SPL.randomNumberOfCustomersPerHr[c]);
-  SPL.projectedCupsPerHr.push(SPLhourlyCups);
-
-  var SPLhourlyCupsLbs = SPL.projectedCupsSoldPerHrInLbs(SPL.randomNumberOfCustomersPerHr[c]);
-  SPL.projectedCupsPerHrInLbs.push(SPLhourlyCupsLbs);
-
-  var SPLhourlyToGoLbs = SPL.projectedToGoLbsSoldPerHr(SPL.randomNumberOfCustomersPerHr[c]);
-  SPL.projectedLbsPerCustomer.push(SPLhourlyToGoLbs);
-
-  var SPLhourlyTotalBeans = SPL.totalAmountOfBeansPerHr(SPL.projectedCupsPerHr[c], SPL.projectedLbsPerCustomer[c]);
-  SPL.totalBeansPerHr.push(SPLhourlyTotalBeans);
-
-  var SPLhourlyEmployees = SPL.numberOfEmployees(SPL.randomNumberOfCustomersPerHr[c]);
-  SPL.employeesPerHr.push(SPLhourlyEmployees);
-
-  //Daily Totals
-  SPL.totalDailyProjectedCups += SPL.projectedCupsPerHr[c];
-  SPL.totalDailyProjectedLbs += SPL.projectedLbsPerCustomer[c];
-  SPL.totalDailyBeans += SPL.totalBeansPerHr[c];
-
-  SPL.sumOfRandomNumbersOfCustomersPerHr += SPL.randomNumberOfCustomersPerHr[c];
-};
-
-//Company Totals
-var SPLcompanyTotalProjectedCups = SPL.totalDailyProjectedCups;
-SPLcompanyTotalProjectedCups;
-var SPLcompanyTotalProjectedLbs = SPL.totalDailyProjectedLbs;
-SPLcompanyTotalProjectedLbs;
-var SPLcompanyTotalBeans = SPL.totalDailyBeans;
-SPLcompanyTotalBeans;
-
-//Adding to Data.html
-var SPLx = document.getElementById('storelocation');
-var SPLChild = document.createElement('p');
-SPLChild.textContent = SPL.name;
-var SPLList = document.createElement ('ul');
-SPLx.appendChild(SPLChild);
-
-
-for ( var b = 0; b < SPL.hrs; b++) {
-  var SPLBullets = document.createElement ('li');
-  SPLBullets.textContent = SPL.time[b] + ': ' + SPL.totalBeansPerHr[b] + ' lbs ' + '[' + SPL.randomNumberOfCustomersPerHr[b] + ' customers, ' + SPL.projectedCupsPerHr[b] + ' (' + SPL.projectedCupsPerHrInLbs[b] + ' lbs) ' + SPL.totalBeansPerHr[b] + ' lbs to-go]';
-  SPLList.appendChild(SPLBullets);
-}
-
-var SPLmorebullets = document.createElement ('li');
-SPLmorebullets.textContent = 'Total customers at ' + SPL.name + ': ' + SPL.sumOfRandomNumbersOfCustomersPerHr;
-SPLList.appendChild(SPLmorebullets);
-
-var SPLmorebulletscups = document.createElement ('li');
-SPLmorebulletscups.textContent = 'Total cups sold at ' + SPL.name + ': ' + SPL.totalDailyProjectedCups;
-SPLList.appendChild(SPLmorebulletscups);
-
-var SPLmorebulletstogo = document.createElement ('li');
-SPLmorebulletstogo.textContent = 'Total to-go pounds sold at ' + SPL.name + ': ' + SPL.totalDailyProjectedLbs;
-SPLList.appendChild(SPLmorebulletstogo);
-
-var SPLmorebulletstotalpounds = document.createElement ('li');
-SPLmorebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + SPL.name + ': ' + SPL.totalDailyBeans;
-SPLList.appendChild(SPLmorebulletstotalpounds);
-
-SPLx.appendChild(SPLList);
-
-
-// South Lake Union
-var SLU = {
-  name: 'South Lake Union',
-  hrs : 13,
-  time: ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'],
-  minCustomerPerHr : 5,
-  maxCustomerPerHr : 18,
-  cupsPerCustomer : 1.3,
-  toGoPoundsPerCustomer : 0.04,
-  randomNumberOfCustomersPerHr: [],
-  sumOfRandomNumbersOfCustomersPerHr:0,
-  projectedCupsPerHr: [],
-  projectedCupsPerHrInLbs: [],
-  projectedLbsPerCustomer: [],
-  totalBeansPerHr: [],
-  employeesPerHr: [],
-  totalDailyProjectedCups: 0,
-  totalDailyProjectedLbs:0,
-  totalDailyBeans:0,
-
-  randomNumberOfCustomers: function(minCustomerPerHr, maxCustomerPerHr) {
-    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
-  },
-
-  projectedCupsSoldPerHr: function(customers) {
-    return Math.ceil(this.cupsPerCustomer * customers);
-  },
-
-  projectedCupsSoldPerHrInLbs: function(z) {
-    return Math.ceil(z / 16);
-  },
-
-  projectedToGoLbsSoldPerHr: function(customers) {
-    return Math.ceil(this.toGoPoundsPerCustomer * customers);
-  },
-
-  totalAmountOfBeansPerHr: function(a,b) {
-    return Math.ceil((a / 16) + b);
-  },
-
-  numberOfEmployees: function(c){
-    return Math.ceil((c * 2) / 60 );
-  }
-
-};
-
-for ( var d = 0; d < SLU.hrs; d++) {
-
-  //Hourly Totals
-  var SLUhourlyCustomer = SLU.randomNumberOfCustomers(SLU.minCustomerPerHr, SLU.maxCustomerPerHr);
-  SLU.randomNumberOfCustomersPerHr.push(SLUhourlyCustomer);
-
-  var SLUhourlyCups = SLU.projectedCupsSoldPerHr(SLU.randomNumberOfCustomersPerHr[d]);
-  SLU.projectedCupsPerHr.push(SLUhourlyCups);
-
-  var SLUhourlyCupsLbs = SLU.projectedCupsSoldPerHrInLbs(SLU.randomNumberOfCustomersPerHr[d]);
-  SLU.projectedCupsPerHrInLbs.push(SLUhourlyCupsLbs);
-
-  var SLUhourlyToGoLbs = SLU.projectedToGoLbsSoldPerHr(SLU.randomNumberOfCustomersPerHr[d]);
-  SLU.projectedLbsPerCustomer.push(SLUhourlyToGoLbs);
-
-  var SLUhourlyTotalBeans = SLU.totalAmountOfBeansPerHr(SLU.projectedCupsPerHr[d], SLU.projectedLbsPerCustomer[d]);
-  SLU.totalBeansPerHr.push(SLUhourlyTotalBeans);
-
-  var SLUhourlyEmployees = SLU.numberOfEmployees(SLU.randomNumberOfCustomersPerHr[d]);
-  SLU.employeesPerHr.push(SLUhourlyEmployees);
-
-  //Daily Totals
-  SLU.totalDailyProjectedCups += SLU.projectedCupsPerHr[d];
-  SLU.totalDailyProjectedLbs += SLU.projectedLbsPerCustomer[d];
-  SLU.totalDailyBeans += SLU.totalBeansPerHr[d];
-
-  SLU.sumOfRandomNumbersOfCustomersPerHr += SLU.randomNumberOfCustomersPerHr[d];
-};
-
-//Company Totals
-var SLUcompanyTotalProjectedCups = SLU.totalDailyProjectedCups;
-SLUcompanyTotalProjectedCups;
-var SLUcompanyTotalProjectedLbs = SLU.totalDailyProjectedLbs;
-SLUcompanyTotalProjectedLbs;
-var SLUcompanyTotalBeans = SLU.totalDailyBeans;
-SLUcompanyTotalBeans;
-
-//Adding to Data.html
-var SLUx = document.getElementById('storelocation');
-var SLUChild = document.createElement('p');
-SLUChild.textContent = SLU.name;
-var SLUList = document.createElement ('ul');
-SLUx.appendChild(SLUChild);
-
-for ( var e = 0; e < SLU.hrs; e++) {
-  var SLUBullets = document.createElement ('li');
-  SLUBullets.textContent = SLU.time[e] + ': ' + SLU.totalBeansPerHr[e] + ' lbs ' + '[' + SLU.randomNumberOfCustomersPerHr[e] + ' customers, ' + SLU.projectedCupsPerHr[e] + ' (' + SLU.projectedCupsPerHrInLbs[e] + ' lbs) ' + SLU.totalBeansPerHr[e] + ' lbs to-go]';
-  SLUList.appendChild(SLUBullets);
-}
-
-var SLUmorebullets = document.createElement ('li');
-SLUmorebullets.textContent = 'Total customers at ' + SLU.name + ': ' + SLU.sumOfRandomNumbersOfCustomersPerHr;
-SLUList.appendChild(SLUmorebullets);
-
-var SLUmorebulletscups = document.createElement ('li');
-SLUmorebulletscups.textContent = 'Total cups sold at ' + SLU.name + ': ' + SLU.totalDailyProjectedCups;
-SLUList.appendChild(SLUmorebulletscups);
-
-var SLUmorebulletstogo = document.createElement ('li');
-SLUmorebulletstogo.textContent = 'Total to-go pounds sold at ' + SLU.name + ': ' + SLU.totalDailyProjectedLbs;
-SLUList.appendChild(SLUmorebulletstogo);
-
-var SLUmorebulletstotalpounds = document.createElement ('li');
-SLUmorebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + SLU.name + ': ' + SLU.totalDailyBeans;
-SLUList.appendChild(SLUmorebulletstotalpounds);
-
-SLUx.appendChild(SLUList);
-
-// Sea-Tac Airport
-
-var SeaTac = {
-  name: 'Sea-Tac Airport',
-  hrs : 13,
-  time: ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'],
-  minCustomerPerHr : 28,
-  maxCustomerPerHr : 44,
-  cupsPerCustomer : 1.1,
-  toGoPoundsPerCustomer : 0.41,
-  randomNumberOfCustomersPerHr: [],
-  sumOfRandomNumbersOfCustomersPerHr:0,
-  projectedCupsPerHr: [],
-  projectedCupsPerHrInLbs: [],
-  projectedLbsPerCustomer: [],
-  totalBeansPerHr: [],
-  employeesPerHr: [],
-  totalDailyProjectedCups: 0,
-  totalDailyProjectedLbs:0,
-  totalDailyBeans:0,
-
-  randomNumberOfCustomers: function(minCustomerPerHr, maxCustomerPerHr) {
-    return Math.floor(Math.random() * (maxCustomerPerHr - minCustomerPerHr + 1) ) + minCustomerPerHr;
-  },
-
-  projectedCupsSoldPerHr: function(customers) {
-    return Math.ceil(this.cupsPerCustomer * customers);
-  },
-
-  projectedCupsSoldPerHrInLbs: function(z) {
-    return Math.ceil(z / 16);
-  },
-
-  projectedToGoLbsSoldPerHr: function(customers) {
-    return Math.ceil(this.toGoPoundsPerCustomer * customers);
-  },
-
-  totalAmountOfBeansPerHr: function(a,b) {
-    return Math.ceil((a / 16) + b);
-  },
-
-  numberOfEmployees: function(c){
-    return Math.ceil((c * 2) / 60 );
-  }
-
-};
-
-for ( var f = 0; f < SeaTac.hrs; f++) {
-
-  //Hourly Totals
-  var SeaTachourlyCustomer = SeaTac.randomNumberOfCustomers(SeaTac.minCustomerPerHr, SeaTac.maxCustomerPerHr);
-  SeaTac.randomNumberOfCustomersPerHr.push(SeaTachourlyCustomer);
-
-  var SeaTachourlyCups = SeaTac.projectedCupsSoldPerHr(SeaTac.randomNumberOfCustomersPerHr[f]);
-  SeaTac.projectedCupsPerHr.push(SeaTachourlyCups);
-
-  var SeaTachourlyCupsLbs = SeaTac.projectedCupsSoldPerHrInLbs(SeaTac.randomNumberOfCustomersPerHr[f]);
-  SeaTac.projectedCupsPerHrInLbs.push(SeaTachourlyCupsLbs);
-
-  var SeaTachourlyToGoLbs = SeaTac.projectedToGoLbsSoldPerHr(SeaTac.randomNumberOfCustomersPerHr[f]);
-  SeaTac.projectedLbsPerCustomer.push(SeaTachourlyToGoLbs);
-
-  var SeaTachourlyTotalBeans = SeaTac.totalAmountOfBeansPerHr(SeaTac.projectedCupsPerHr[f], SeaTac.projectedLbsPerCustomer[f]);
-  SeaTac.totalBeansPerHr.push(SeaTachourlyTotalBeans);
-
-  var SeaTachourlyEmployees = SeaTac.numberOfEmployees(SeaTac.randomNumberOfCustomersPerHr[f]);
-  SeaTac.employeesPerHr.push(SeaTachourlyEmployees);
-
-  //Daily Totals
-  SeaTac.totalDailyProjectedCups += SeaTac.projectedCupsPerHr[f];
-  SeaTac.totalDailyProjectedLbs += SeaTac.projectedLbsPerCustomer[f];
-  SeaTac.totalDailyBeans += SeaTac.totalBeansPerHr[f];
-
-  SeaTac.sumOfRandomNumbersOfCustomersPerHr += SeaTac.randomNumberOfCustomersPerHr[f];
-};
-
-//Company Totals
-var SeaTaccompanyTotalProjectedCups = SeaTac.totalDailyProjectedCups;
-SeaTaccompanyTotalProjectedCups;
-var SeaTaccompanyTotalProjectedLbs = SeaTac.totalDailyProjectedLbs;
-SeaTaccompanyTotalProjectedLbs;
-var SeaTaccompanyTotalBeans = SeaTac.totalDailyBeans;
-SeaTaccompanyTotalBeans;
-
-//Adding to Data.html
-var SeaTacx = document.getElementById('storelocation');
-var SeaTacChild = document.createElement('p');
-SeaTacChild.textContent = SeaTac.name;
-var SeaTacList = document.createElement ('ul');
-SeaTacx.appendChild(SeaTacChild);
-
-for ( var g = 0; g < SeaTac.hrs; g++) {
-  var SeaTacBullets = document.createElement ('li');
-  SeaTacBullets.textContent = SeaTac.time[g] + ': ' + SeaTac.totalBeansPerHr[g] + ' lbs ' + '[' + SeaTac.randomNumberOfCustomersPerHr[g] + ' customers, ' + SeaTac.projectedCupsPerHr[g] + ' (' + SeaTac.projectedCupsPerHrInLbs[g] + ' lbs) ' + SeaTac.totalBeansPerHr[g] + ' lbs to-go]';
-  SeaTacList.appendChild(SeaTacBullets);
-}
-
-var SeaTacmorebullets = document.createElement ('li');
-SeaTacmorebullets.textContent = 'Total customers at ' + SeaTac.name + ': ' + SeaTac.sumOfRandomNumbersOfCustomersPerHr;
-SeaTacList.appendChild(SeaTacmorebullets);
-
-var SeaTacmorebulletscups = document.createElement ('li');
-SeaTacmorebulletscups.textContent = 'Total cups sold at ' + SeaTac.name + ': ' + SeaTac.totalDailyProjectedCups;
-SeaTacList.appendChild(SeaTacmorebulletscups);
-
-var SeaTacmorebulletstogo = document.createElement ('li');
-SeaTacmorebulletstogo.textContent = 'Total to-go pounds sold at ' + SeaTac.name + ': ' + SeaTac.totalDailyProjectedLbs;
-SeaTacList.appendChild(SeaTacmorebulletstogo);
-
-var SeaTacmorebulletstotalpounds = document.createElement ('li');
-SeaTacmorebulletstotalpounds.textContent = 'Total pounds of beans needed at ' + SeaTac.name + ': ' + SeaTac.totalDailyBeans;
-SeaTacList.appendChild(SeaTacmorebulletstotalpounds);
-
-SeaTacx.appendChild(SeaTacList);*/
+makeRowBaristas(pikePlaceMarket);
+makeRowBaristas(capitolHill);
+makeRowBaristas(seattlePublicLibrary);
+makeRowBaristas(southLakeUnion);
+makeRowBaristas(seaTacAirport);

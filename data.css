@@ -1,0 +1,18 @@
+h2 {
+  font-family: sans-serif;
+}
+
+th {
+  padding: 2px;
+  text-align: center;
+  border: solid;
+  border-color: gray;
+}
+
+td {
+  padding: 2px;
+  text-align: center;
+  border: solid;
+  border-color: gray;
+  border-collapse: collapse;
+}
