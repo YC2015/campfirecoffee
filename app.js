@@ -63,16 +63,28 @@ StoreLocation.prototype.numberOfEmployees = function(c){
   }
 };
 
-StoreLocation.prototype.totalDailyProjectedCups = function(cups){
+StoreLocation.prototype.dailyProjectedCups = function(cups){
   for (var i = 0; i < time.length; i++){
-    var companyTotalProjectedCups = this.totalDailyProjectedCups += cups[i];
-    companyTotalProjectedCups;
-    return this.companyTotalProjectedCups;
+    this.totalDailyProjectedCups += cups[i];
   }
 };
 
-StoreLocation.prototype.allmethods = function() {
+StoreLocation.prototype.dailyProjectedLbs = function(lbs){
+  for (var i = 0; i < time.length; i++){
+    this.totalDailyProjectedLbs += lbs[i];
+  }
+};
 
+StoreLocation.prototype.dailyTotalLbs = function(lbs){
+  for (var i = 0; i < time.length; i++){
+    this.totalDailyBeans += lbs[i];
+  }
+};
+
+
+
+
+StoreLocation.prototype.allmethods = function() {
 };
 
 
@@ -83,7 +95,9 @@ pikePlaceMarket.projectedCupsSoldPerHrInLbs(pikePlaceMarket.projectedCupsPerHr);
 pikePlaceMarket.projectedToGoLbsSoldPerHr(pikePlaceMarket.randomNumberOfCustomersPerHr);
 pikePlaceMarket.totalAmountOfBeansPerHr(pikePlaceMarket.projectedCupsPerHr, pikePlaceMarket.projectedToGoLbsPerHr);
 pikePlaceMarket.numberOfEmployees(pikePlaceMarket.randomNumberOfCustomersPerHr);
-pikePlaceMarket.totalDailyProjectedCups(pikePlaceMarket.projectedCupsPerHr);
+pikePlaceMarket.dailyProjectedCups(pikePlaceMarket.projectedCupsPerHr);
+pikePlaceMarket.dailyProjectedLbs(pikePlaceMarket.projectedToGoLbsPerHr);
+pikePlaceMarket.dailyTotalLbs(pikePlaceMarket.totalBeansPerHr);
 
 /*var PikePlaceMarket = {
   name: 'Pike Place Market',
