@@ -81,23 +81,42 @@ StoreLocation.prototype.dailyTotalLbs = function(lbs){
   }
 };
 
-
+StoreLocation.prototype.dailyCustomers = function(customers){
+  for (var i = 0; i < time.length; i++){
+    this.sumOfRandomNumbersOfCustomersPerHr += customers[i];
+  }
+};
 
 
 StoreLocation.prototype.allmethods = function() {
+  this.randomNumberOfCustomers(this.minCustomerPerHr, this.maxCustomerPerHr);
+  this.projectedCupsSoldPerHr(this.randomNumberOfCustomersPerHr);
+  this.projectedCupsSoldPerHrInLbs(this.projectedCupsPerHr);
+  this.projectedToGoLbsSoldPerHr(this.randomNumberOfCustomersPerHr);
+  this.totalAmountOfBeansPerHr(this.projectedCupsPerHr, this.projectedToGoLbsPerHr);
+  this.numberOfEmployees(this.randomNumberOfCustomersPerHr);
+  this.dailyProjectedCups(this.projectedCupsPerHr);
+  this.dailyProjectedLbs(this.projectedToGoLbsPerHr);
+  this.dailyTotalLbs(this.totalBeansPerHr);
+  this.dailyCustomers(this.randomNumberOfCustomersPerHr);
 };
 
 
 var pikePlaceMarket = new StoreLocation ('Pike Place Market', 14, 35, 1.2, 0.34);
-pikePlaceMarket.randomNumberOfCustomers(pikePlaceMarket.minCustomerPerHr, pikePlaceMarket.maxCustomerPerHr);
-pikePlaceMarket.projectedCupsSoldPerHr(pikePlaceMarket.randomNumberOfCustomersPerHr);
-pikePlaceMarket.projectedCupsSoldPerHrInLbs(pikePlaceMarket.projectedCupsPerHr);
-pikePlaceMarket.projectedToGoLbsSoldPerHr(pikePlaceMarket.randomNumberOfCustomersPerHr);
-pikePlaceMarket.totalAmountOfBeansPerHr(pikePlaceMarket.projectedCupsPerHr, pikePlaceMarket.projectedToGoLbsPerHr);
-pikePlaceMarket.numberOfEmployees(pikePlaceMarket.randomNumberOfCustomersPerHr);
-pikePlaceMarket.dailyProjectedCups(pikePlaceMarket.projectedCupsPerHr);
-pikePlaceMarket.dailyProjectedLbs(pikePlaceMarket.projectedToGoLbsPerHr);
-pikePlaceMarket.dailyTotalLbs(pikePlaceMarket.totalBeansPerHr);
+pikePlaceMarket.allmethods();
+
+var capitolHill = new StoreLocation ('Capitol Hill', 12, 28, 3.2, 0.03);
+capitolHill.allmethods();
+
+var seattlePublicLibrary = new StoreLocation ('Seattle Public Library', 9, 45, 2.6, 0.02);
+seattlePublicLibrary.allmethods();
+
+var southLakeUnion = new StoreLocation ('South Lake Union', 5, 18, 1.3, 0.04);
+southLakeUnion.allmethods();
+
+var seaTacAirport = new StoreLocation ('Sea-Tac Airport', 28, 44, 1.1, 0.41);
+seaTacAirport.allmethods();
+
 
 /*var PikePlaceMarket = {
   name: 'Pike Place Market',
