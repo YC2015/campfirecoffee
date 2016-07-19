@@ -129,10 +129,26 @@ seaTacAirport.allmethods();
 
 // Creating Table Beans Needed By Location Each Day
 
-
+//Global variables
 var table = document.getElementById('beanstable');
 var total = 'Daily Location Total';
 
+//Helper Functions for Totals Row
+var dailytotalofallstores = pikePlaceMarket.totalDailyBeans + capitolHill.totalDailyBeans + seattlePublicLibrary.totalDailyBeans + southLakeUnion.totalDailyBeans + southLakeUnion.totalDailyBeans + seaTacAirport.totalDailyBeans;
+
+var totalsarrayperhr = [];
+
+function dailytotalofallstoresperhr(time) {
+  for ( var t = 0; t < time.length; t++) {
+    var totalperhr = pikePlaceMarket.totalBeansPerHr[t] + capitolHill.totalBeansPerHr[t] + seattlePublicLibrary.totalBeansPerHr[t] + southLakeUnion.totalBeansPerHr[t] + southLakeUnion.totalBeansPerHr[t] + seaTacAirport.totalBeansPerHr[t];
+    totalsarrayperhr.push(totalperhr);
+  }
+}
+
+dailytotalofallstoresperhr(time);
+
+
+// Making the first row
 function makeheadertime(timearray) {
   var tableheader1 = document.createElement('th');
   table.appendChild(tableheader1);
@@ -149,6 +165,7 @@ function makeheadertime(timearray) {
 
 makeheadertime(time);
 
+// Making store rows
 function makeRowBeans(obj) {
   var row = document.createElement('tr');
 
@@ -174,6 +191,29 @@ makeRowBeans(capitolHill);
 makeRowBeans(seattlePublicLibrary);
 makeRowBeans(southLakeUnion);
 makeRowBeans(seaTacAirport);
+
+//Making final table row
+function maketotalrow(totals){
+  var totalrow = document.createElement('tr');
+
+  var cella = document.createElement('td');
+  cella.textContent = 'Totals';
+  totalrow.appendChild(cella);
+
+  var cellb = document.createElement('td');
+  cellb.textContent = dailytotalofallstores;
+  totalrow.appendChild(cellb);
+
+  for ( var h = 0; h < time.length; h++) {
+    var cellc = document.createElement('td');
+    cellc.textContent = totalsarrayperhr[h];
+    totalrow.appendChild(cellc);
+  }
+  table.appendChild(totalrow);
+}
+
+maketotalrow();
+
 
 //Creating Baristas Needed By Location
 
