@@ -217,11 +217,29 @@ maketotalrow();
 
 //Creating Baristas Needed By Location
 
+//Global Variables for Barista Table
 var table = document.getElementById ('baristatable');
 var total = 'Total';
+
+// Variables and helper functions for barista table
+var dailybaristatotalofallstores = pikePlaceMarket.totalDailyEmployees + capitolHill.totalDailyEmployees + seattlePublicLibrary.totalDailyEmployees + southLakeUnion.totalDailyEmployees + southLakeUnion.totalDailyEmployees + seaTacAirport.totalDailyEmployees;
+
+var baristatotalsarrayperhr = [];
+
+function dailybaristatotalofallstoresperhr(time) {
+  for ( var t = 0; t < time.length; t++) {
+    var totalperhr = pikePlaceMarket.employeesPerHr[t] + capitolHill.employeesPerHr[t] + seattlePublicLibrary.employeesPerHr[t] + southLakeUnion.employeesPerHr[t] + southLakeUnion.employeesPerHr[t] + seaTacAirport.employeesPerHr[t];
+    baristatotalsarrayperhr.push(totalperhr);
+  }
+}
+
+dailybaristatotalofallstoresperhr(time);
+
+
+//Making first row
 makeheadertime(time);
 
-
+// Making store rows
 function makeRowBaristas(obj) {
   var row = document.createElement('tr');
 
@@ -247,3 +265,26 @@ makeRowBaristas(capitolHill);
 makeRowBaristas(seattlePublicLibrary);
 makeRowBaristas(southLakeUnion);
 makeRowBaristas(seaTacAirport);
+
+// Making last row
+
+function makebaristatotalrow(totals){
+  var totalrow = document.createElement('tr');
+
+  var cella = document.createElement('td');
+  cella.textContent = 'Totals';
+  totalrow.appendChild(cella);
+
+  var cellb = document.createElement('td');
+  cellb.textContent = dailybaristatotalofallstores;
+  totalrow.appendChild(cellb);
+
+  for ( var h = 0; h < time.length; h++) {
+    var cellc = document.createElement('td');
+    cellc.textContent = baristatotalsarrayperhr[h];
+    totalrow.appendChild(cellc);
+  }
+  table.appendChild(totalrow);
+}
+
+makebaristatotalrow();
