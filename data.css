@@ -3,6 +3,7 @@ h2 {
 }
 
 th {
+  border-width: 1px;
   padding: 2px;
   text-align: center;
   border: solid;
@@ -10,9 +11,17 @@ th {
 }
 
 td {
+  border-width: 1px;
   padding: 2px;
   text-align: center;
   border: solid;
   border-color: gray;
+}
+
+#beanstable {
+  border-collapse: collapse;
+}
+
+#baristatable {
   border-collapse: collapse;
 }
