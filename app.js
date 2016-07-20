@@ -1,4 +1,5 @@
 var time = ['6:00am','7:00am', '8:00am', '9:00am', '10:00am', '11:00am', '12:00pm', '1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm', '8:00pm'];
+var storesArray = [];
 
 //Constructor
 
@@ -20,6 +21,7 @@ function StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustome
   this.totalDailyProjectedCups = 0;
   this.totalDailyProjectedLbs = 0;
   this.totalDailyBeans = 0;
+  storesArray.push(this);
 };
 
 //Methods
@@ -127,6 +129,13 @@ southLakeUnion.allmethods();
 var seaTacAirport = new StoreLocation ('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 seaTacAirport.allmethods();
 
+
+function updateStores() {
+  for (elem of storesArray){
+    elem.allmethods();
+  }
+}
+
 // Creating Table Beans Needed By Location Each Day
 
 
@@ -175,12 +184,11 @@ makeRowBeans(seattlePublicLibrary);
 makeRowBeans(southLakeUnion);
 makeRowBeans(seaTacAirport);
 
-//Creating Baristas Needed By Location
 
+//Creating Baristas Needed By Location
 var table = document.getElementById ('baristatable');
 var total = 'Total';
 makeheadertime(time);
-
 
 function makeRowBaristas(obj) {
   var row = document.createElement('tr');
@@ -207,3 +215,28 @@ makeRowBaristas(capitolHill);
 makeRowBaristas(seattlePublicLibrary);
 makeRowBaristas(southLakeUnion);
 makeRowBaristas(seaTacAirport);
+
+// Form section
+
+
+// Event handler
+function handleFormSubmit(event) {
+  event.preventDefault();
+  console.log(event);
+  console.log(event.target);
+
+
+  var name = event.target.name.value;
+  var minCustomerPerHr = parseFloat(event.target.minimum.value);
+  var maxCustomerPerHr = parseFloat(event.target.maximum.value);
+  var cupsPerCustomer = parseFloat(event.target.cups.value);
+  var toGoPoundsPerCustomer = parseFloat(event.target.togo.value);
+
+  var newStore = new StoreLocation(name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer, toGoPoundsPerCustomer);
+  newStore.allmethods();
+
+  makeRowBeans(newStore);
+}
+
+// Event listener
+form.addEventListener('submit', handleFormSubmit);
