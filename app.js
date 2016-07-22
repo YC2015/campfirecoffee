@@ -150,7 +150,7 @@ function dailytotalofallstoresperhr(time) {
 dailytotalofallstoresperhr(time);
 
 
-// Making the first row
+// Making the first row Beans Table
 function makeheadertime(timearray) {
   var tableheader1 = document.createElement('th');
   table.appendChild(tableheader1);
@@ -220,8 +220,8 @@ maketotalrow();
 //Creating Baristas Needed By Location
 
 //Global Variables for Barista Table
-var table = document.getElementById ('baristatable');
-var total = 'Total';
+var baristatable = document.getElementById ('baristatable');
+var baristatotal = 'Total';
 
 // Variables and helper functions for barista table
 var dailybaristatotalofallstores = pikePlaceMarket.totalDailyEmployees + capitolHill.totalDailyEmployees + seattlePublicLibrary.totalDailyEmployees + southLakeUnion.totalDailyEmployees + southLakeUnion.totalDailyEmployees + seaTacAirport.totalDailyEmployees;
@@ -238,8 +238,22 @@ function dailybaristatotalofallstoresperhr(time) {
 dailybaristatotalofallstoresperhr(time);
 
 
-//Making first row
-makeheadertime(time);
+//Making first row for Barista Table
+
+function baristamakeheadertime(timearray) {
+  var tableheader4 = document.createElement('th');
+  baristatable.appendChild(tableheader4);
+  var tableheader5 = document.createElement('th');
+  tableheader5.textContent = baristatotal;
+  baristatable.appendChild(tableheader5);
+
+  for ( var h = 0; h < time.length; h++) {
+    var tableheader6 = document.createElement('th');
+    tableheader6.textContent = timearray[h];
+    baristatable.appendChild(tableheader6);
+  }
+}
+baristamakeheadertime(time);
 
 // Making store rows
 function makeRowBaristas(obj) {
@@ -259,7 +273,7 @@ function makeRowBaristas(obj) {
     cell3.textContent = obj.employeesPerHr[h];
     row.appendChild(cell3);
   }
-  table.appendChild(row);
+  baristatable.appendChild(row);
 }
 
 makeRowBaristas(pikePlaceMarket);
@@ -286,7 +300,49 @@ function makebaristatotalrow(totals){
     cellc.textContent = baristatotalsarrayperhr[h];
     totalrow.appendChild(cellc);
   }
-  table.appendChild(totalrow);
+  baristatable.appendChild(totalrow);
 }
 
 makebaristatotalrow();
+
+//Helper Function to delete row
+var rowdelete = (storesArray.length);
+function deleteFunction(){
+  document.getElementById('beanstable').deleteRow(rowdelete);
+  document.getElementById('baristatable').deleteRow(rowdelete);
+}
+
+
+
+// Event Handler
+
+function handleFormSubmit (event){
+  event.preventDefault();
+  console.log(event);
+  console.log(event.target);
+
+  var name = event.target.name.value;
+  var minCustomerPerHr = parseFloat (event.target.minimum.value);
+  var maxCustomerPerHr = parseFloat (event.target.maximum.value);
+  var cupsPerCustomer = parseFloat (event.target.cups.value);
+  var toGoPoundsPerCustomer = parseFloat (event.target.togo.value);
+
+  var newStore = new StoreLocation (name, minCustomerPerHr, maxCustomerPerHr, cupsPerCustomer, toGoPoundsPerCustomer);
+  newStore.allmethods();
+
+  deleteFunction();
+  makeRowBeans(newStore);
+  maketotalrow();
+  makeRowBaristas(newStore);
+  makebaristatotalrow();
+
+  //clear form
+  event.target.name.value = '';
+  event.target.minimum.value = null;
+  event.target.maximum.value = null;
+  event.target.cups.value = null;
+  event.target.togo.value = null;
+}
+
+// Event Listener
+form. addEventListener('submit', handleFormSubmit);
