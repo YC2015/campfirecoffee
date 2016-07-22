@@ -5,10 +5,38 @@
   <link rel="stylesheet" href="data.css">
 </head>
 <body>
+  <form id = 'form'>
+    <fieldset>
+      <legend> New Store </legend>
+      <div>
+          <label for = 'name'> Store Location </label>
+          <input type = 'text' name = 'name' required>
+      </div>
+      <div>
+          <lable for = 'minimum'>Min Customers per Hr</label>
+          <input type = 'number' name = 'minimum' min = '0' required>
+      </div>
+      <div>
+          <lable for = 'maximum'>Max Customers per Hr</label>
+          <input type = 'number' name = 'maximum' min = '0' required>
+      </div>
+      <div>
+          <lable for = 'cups'>Cups per Customer</label>
+          <input type = 'number' name = 'cups' min = '0' required>
+      </div>
+      <div>
+        <lable for = 'togo'>To Go Pounds Per Customer </label>
+        <input type = 'number' name = 'togo' min = '0' required>
+      </div>
+      <input type = 'submit' value = 'Add Store'>
+    </fieldset>
+  </form>
   <h2>Beans Needed By Location Each Day </h2>
-  <div id = "beanstable"></div>
+  <table id = "beanstable"></table>
+    <tfoot>
+    </tfoot>
   <h2>Baristas Needed By Location</h2>
-  <div id = "baristatable"></div>
+  <table id = "baristatable"></table>
   <script type="text/javascript" src='app.js'></script>
 </body>
 </html>
